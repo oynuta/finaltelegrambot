@@ -1,0 +1,29 @@
+{
+  "name": "finaltelegrambot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+ "scripts": {
+  "start": "node index.js",
+  "dev": "nodemon index.js"
+}
+,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oynuta/finaltelegrambot.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/oynuta/finaltelegrambot/issues"
+  },
+  "homepage": "https://github.com/oynuta/finaltelegrambot#readme",
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "node-telegram-bot-api": "^0.66.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
+  }
+}
