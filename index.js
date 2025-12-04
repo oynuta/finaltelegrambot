@@ -1,16 +1,16 @@
-import TelegramBot from "node-telegram-bot-api";
-import { config } from "dotenv";
-config();
 import "./src/bot/bot.js";
-const bot = new TelegramBot(process.env.BOT_TOKEN, { polling: true });
+import mongoose from "mongoose";
+import { config } from "dotenv";
+config()
 
-bot.on("message", (msg) => {
-  const chatId = msg.chat.id;
-  const firstname = msg.chat.first_name;
-  const text = msg.text;
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log(`db IS CONNECTED!`);
+  })
+  .catch(() => {
+    console.log(`DB DISCONNNECTED!`);
+  });
 
-  bot.sendMessage(chatId, `Assalamu Alaikum,welcomeeee)), ${firstname}`);
-  bot.sendMessage(chatId, `text: ${text}`);
-});
 
 console.log("working!");
