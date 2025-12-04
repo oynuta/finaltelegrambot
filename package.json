@@ -4,11 +4,10 @@
   "description": "",
   "main": "index.js",
   "type": "module",
- "scripts": {
-  "start": "node index.js",
-  "dev": "nodemon index.js"
-}
-,
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/oynuta/finaltelegrambot.git"
@@ -22,6 +21,7 @@
   "homepage": "https://github.com/oynuta/finaltelegrambot#readme",
   "dependencies": {
     "dotenv": "^17.2.3",
+    "mongoose": "^9.0.0",
     "node-telegram-bot-api": "^0.66.0"
   },
   "devDependencies": {
