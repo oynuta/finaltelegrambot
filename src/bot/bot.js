@@ -4,14 +4,26 @@ config();
 
 const bot = new TelegramBot(process.env.BOT_TOKEN, { polling: true });
 
-bot.on("message", (msg) => {
+bot.onText(/\/start/, (msg) => {
   const chatId = msg.chat.id;
   const firstname = msg.chat.first_name;
-  const text = msg.text;
 
-  bot.sendMessage(chatId, `Assalamu Alaikum,welcomeeee)), ${firstname}`);
-  bot.sendMessage(chatId, `text: ${text}`);
+  bot.sendMessage(chatId, `Assalamu Alaikum, ${firstname}! `, {
+    reply_markup: {
+      keyboard: [
+        ["💡 About bot", "📚 Help"],
+        ["😎 My profile"]  
+      ],
+      resize_keyboard: true
+    }
+  });
 });
 
+// Handle buttons except quotes
+bot.on("message", (msg) => {
+  const text = msg.text;
+  const chatId = msg.chat.id;
+
+  });
 
 console.log("working!");
