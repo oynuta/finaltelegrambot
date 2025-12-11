@@ -1,16 +1,13 @@
-import "./src/bot/bot.js";
 import mongoose from "mongoose";
-import { config } from "dotenv";
-config()
+import "./src/bot/bot.js";
 
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
-    console.log(`db IS CONNECTED!`);
+    console.log(`Db is connected...`);
   })
   .catch(() => {
-    console.log(`DB DISCONNNECTED!`);
+    console.log(`Error: db is not connected!`);
   });
 
-
-console.log("working!");
+console.log("Dastur boshlanmoqda...");
