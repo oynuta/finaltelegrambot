@@ -1,81 +1,121 @@
 import TelegramBot from "node-telegram-bot-api";
 import { config } from "dotenv";
+import onStart from "./handlers/onStart.js";
+import onProfile from "./handlers/onProfile.js";
+import onError from "./handlers/onError.js";
+import onCourses from "./handlers/onCourses.js";
 config();
 
-import onStart from "./handlers/Onstart.js";
-
 export const bot = new TelegramBot(process.env.BOT_TOKEN, { polling: true });
-const CHANNEL_ID = "@academy_100x_uz"; // Bot must be admin here if private
 
-// ===== Check subscription =====
+const CHANNEL_ID = "@group_IT101";
+// check if user is subscribed to channel
 const checkIfUserSubscribed = async (chatId) => {
   try {
     const chatMember = await bot.getChatMember(CHANNEL_ID, chatId);
-    const status = chatMember.status;
+    console.log(chatMember.status);
 
-    if (status === "left" || status === "kicked") return false;
-    return true;
-  } catch (err) {
-    console.log("Subscription check error:", err);
-    return false; // prevent crash
+    if (chatMember.status == "left" || chatMember.status == "kicked") {
+      return false;
+    } else {
+      return true;
+    }
+  } catch {
+    console.log("error: chatMember checking");
   }
 };
 
-// ===== Message handler =====
 bot.on("message", async (msg) => {
-  try {
-    const chatId = msg.chat.id;
-    const firstname = msg.chat.first_name || "Foydalanuvchi";
-    const text = msg.text;
+  const chatId = msg.chat.id;
+  const firstname = msg.chat.first_name;
+  const text = msg.text;
 
-    const subscription = await checkIfUserSubscribed(chatId);
-    console.log("Subscribed?", subscription);
+  // status
+  // creator - yaratuvchi
+  // member - a'zo
+  // admin - adminstrator
+  // left - tark etgan
+  // kicked - chiqarib yuborilgan
 
-    if (!subscription) {
-      return bot.sendMessage(
-        chatId,
-        `Hurmatli ${firstname}, siz botdan foydalanish uchun kanalga obuna bo‘lishingiz kerak 👇`,
-        {
-          reply_markup: {
-            inline_keyboard: [
-              [{ text: "100x Academy Xiva", url: "https://t.me/academy_100x_uz" }],
-              [{ text: "Obunani tekshirish ✅", callback_data: "confirm_subscription" }],
+  const user_subscribed = await checkIfUserSubscribed(chatId);
+
+  console.log(user_subscribed);
+
+  if (user_subscribed == false) {
+    return bot.sendMessage(
+      chatId,
+      `Hurmatli ${firstname}, \nSiz botimizdan foydalanishingiz uchun oldin quyidagi kanalga obuna bo'lishing garak... 👇`,
+      {
+        reply_markup: {
+          inline_keyboard: [
+            [
+              {
+                text: `10.1 Group Channel`,
+                url: "https://t.me/group_IT101",
+              },
             ],
-          },
-        }
-      );
-    }
-
-    if (text === "/start") return onStart(msg);
-
-    bot.sendMessage(chatId, `Assalomu alaykum, ${firstname}!`);
-    bot.sendMessage(chatId, `Siz yozdingiz: ${text}`);
-  } catch (err) {
-    console.log("Message handler error:", err);
-  }
-});
-
-// ===== Callback handler =====
-bot.on("callback_query", async (query) => {
-  try {
-    const msg = query.message;
-    const data = query.data;
-    const id = query.id;
-    const chatId = msg.chat.id;
-
-    if (data === "confirm_subscription") {
-      const subscription = await checkIfUserSubscribed(chatId);
-
-      if (!subscription) {
-        return bot.answerCallbackQuery(id, { text: "Siz hali obuna bo‘lmagansiz ❌" });
-      } else {
-        await bot.deleteMessage(chatId, msg.message_id);
-        return onStart(msg);
+            [
+              {
+                text: `Obunani tekshirish ✅`,
+                callback_data: "confirm_subscribtion",
+              },
+            ],
+          ],
+        },
       }
+    );
+  }
+
+  if (text == "/start") {
+    return onStart(msg);
+  }
+
+  if (text == "/profile") {
+    return onProfile(msg);
+  }
+
+  if (text == "📚 Kurslar") {
+    return onCourses(msg);
+  }
+
+  return onError(msg);
+});
+
+bot.on("callback_query", async (query) => {
+  const msg = query.message;
+  const data = query.data;
+  const queryId = query.id;
+
+  const chatId = msg.chat.id;
+  const firstname = msg.chat.first_name;
+
+  if (data == "confirm_subscribtion") {
+    console.log("TUGMA BOSILDIII");
+    const user_subscribed = await checkIfUserSubscribed(chatId);
+
+    if (user_subscribed == false) {
+      return bot.answerCallbackQuery(queryId, {
+        text: "Siz hali obuna bo'lmadingiz... ❌",
+      });
+    } else {
+      bot.deleteMessage(chatId, msg.message_id);
+      return onStart(msg);
     }
-  } catch (err) {
-    console.log("Callback handler error:", err);
+  }
+
+  if (data == "course_english") {
+    bot.sendMessage(chatId, `Enlish course is selected`, {
+      reply_markup: {
+        inline_keyboard: [
+          [{ text: `Ro'yhatdan o'tish`, callback_data: "register:english" }],
+        ],
+      },
+    });
+
+    bot.deleteMessage(chatId, msg.message_id);
   }
 });
 
-console.log("🚀 Bot ishga tushdi va ready!");
+console.log("Bot ishga tushdi...");
+
+// export { bot };
