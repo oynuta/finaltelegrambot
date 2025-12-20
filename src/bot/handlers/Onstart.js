@@ -7,24 +7,23 @@ function onStart(msg) {
   bot.sendMessage(
     chatId,
     `
-  👋 Assalomu alaykum, ${firstname}!
+👋 Assalomu alaykum, ${firstname}!
 
 📚 100x o‘quv markazining rasmiy botiga xush kelibsiz!
 
 Bu bot orqali siz:
-• Kurslarimiz haqida batafsil ma’lumot olasiz  
-• Kurslarga onlayn ro‘yxatdan o‘tishingiz mumkin  
-• Jadval va to‘lovlar haqida ma’lumot olasiz  
+• Kurslar haqida ma’lumot olasiz  
+• Kurslarga onlayn ro‘yxatdan o‘tasiz  
+• Jadval va to‘lovlarni bilib olasiz  
 
-Quyidagi menyudan kerakli bo‘limni tanlang 👇
-
-  `,
+Kerakli bo‘limni tanlang 👇
+    `,
     {
       reply_markup: {
         keyboard: [
-          [{ text: "📚 Kurslar" }, { text: "✍️ Ro‘yxatdan o‘tish" }],
-          [{ text: "ℹ️ Markaz haqida" }, { text: "💬 Fikr bildirish" }],
-          [{ text: "❓ Yordam" }],
+          [{ text: "📚 Kurslar" }],
+          [{ text: "✍️ Ro‘yxatdan o‘tish" }],
+          [{ text: "ℹ️ Markaz haqida" }, { text: "❓ Yordam" }],
         ],
         resize_keyboard: true,
       },
