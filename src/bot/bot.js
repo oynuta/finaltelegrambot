@@ -116,6 +116,90 @@ bot.on("callback_query", async (query) => {
   }
 });
 
+
+bot.on("callback_query", (callbackQuery) => {
+  const msg = callbackQuery.message;
+  const data = callbackQuery.data;
+
+  if (data === "course_english") {
+    bot.sendMessage(
+      msg.chat.id,
+      `
+🇬🇧 *Ingliz tili kursi*
+
+• Beginner – Advanced  
+• IELTS / CEFR tayyorlov  
+• Haftasiga 3 marta  
+• Tajribali ustozlar  
+
+📌 Natija kafolatlangan
+      `,
+      { parse_mode: "Markdown" }
+    );
+  }
+
+  if (data === "course_russian") {
+    bot.sendMessage(
+      msg.chat.id,
+      `
+🇷🇺 *Rus tili kursi*
+
+• Noldan boshlab  
+• So‘zlashuvga yo‘naltirilgan  
+• Haftasiga 3 marta  
+      `,
+      { parse_mode: "Markdown" }
+    );
+  }
+
+  if (data === "course_math") {
+    bot.sendMessage(
+      msg.chat.id,
+      `
+🧮 *Matematika kursi*
+
+• Maktab dasturi  
+• Imtihonlarga tayyorlov  
+• Murakkab masalalar yechish  
+      `,
+      { parse_mode: "Markdown" }
+    );
+  }
+
+  if (data === "course_programming") {
+    bot.sendMessage(
+      msg.chat.id,
+      `
+💻 *Dasturlash kursi*
+
+• Python  
+• Web (HTML, CSS, JS)  
+• Real loyihalar  
+• IT ga kirish uchun ideal  
+      `,
+      { parse_mode: "Markdown" }
+    );
+  }
+
+  if (data === "course_design") {
+    bot.sendMessage(
+      msg.chat.id,
+      `
+🎨 *Grafik dizayn kursi*
+
+• Photoshop  
+• Illustrator  
+• SMM dizayn  
+• Portfolio tayyorlash  
+      `,
+      { parse_mode: "Markdown" }
+    );
+  }
+
+  // ⚠️ loading belgini yo‘qotish uchun SHART
+  bot.answerCallbackQuery(callbackQuery.id);
+});
+
 console.log("Bot ishga tushdi...");
 
 // export { bot };
